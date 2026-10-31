@@ -85,7 +85,7 @@ signaled that it is communicated out-of-band or reconstructed by the distributio
 enum {
   reserved(0),
   full(1),
-  httpsUri(2),
+  httpsUrl(2),
   outOfBand(3),
   distributionService(4),
   (255)
@@ -96,7 +96,7 @@ struct {
   select (representation) {
     case full:
       optional<Node> ratchet_tree<V>;
-    case httpsUri:
+    case httpsUrl:
       /* an HTTPS URL */
       opaque ratchet_tree_url<V>;
     case outOfBand:
@@ -110,7 +110,8 @@ struct {
 - `full` indicates that the complete `ratchet_tree` extension is included in
 the RatchetTreeOption object.
 - `httpsUri` indicates that the `ratchet_tree` can be downloaded from a
-URI using the `https:` scheme.
+- `httpsUrl` indicates that the `ratchet_tree` can be downloaded from a
+URL using the `https:` scheme.
 - `outOfBand` indicates that the `ratchet_tree` is communicated or
 reconstructed via an unspecified out-of-band application protocol.
 - `distributionService` indicates that the `ratchet_tree` is reconstructed
