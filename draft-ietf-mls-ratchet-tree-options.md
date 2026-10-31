@@ -190,8 +190,8 @@ The value of `ratchet_tree_presence` is defined as follows:
 The `group_info_extensions` object is the list of GroupInfo
 extensions, omitting any `ratchet_tree` extension (if present). The only
 other GroupInfo extension defined in the base protocol is `external_pub`,
-the group's public key for external joiners. The `group_info_extensions` is
-often an empty list.
+the group's public key for external joiners whose private key is held by the
+entire group. The `group_info_extensions` is often an empty list.
 
 The `signature` in the PartialGroupInfo is the signature produced by the
 committer (represented by its leaf index in the GroupInfo as the `signer`).
