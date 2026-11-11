@@ -173,6 +173,8 @@ struct {
   RatchetTreePresence ratchet_tree_presence;
   /* GroupInfo extensions excluding ratchet_tree */
   Extension group_info_extensions<V>;
+  /* position of ratchet_tree in the signed GroupInfo extensions */
+  optional<uint32> ratchet_tree_index;
   opaque signature<V>;
 } PartialGroupInfo;
 ~~~
@@ -200,9 +202,16 @@ The `signature` in the PartialGroupInfo is the signature produced by the
 committer (represented by its leaf index in the GroupInfo as the `signer`), as
 described in {{Section 12.4.3 of !RFC9420}}. The `signature` only covers
 GroupInfo extensions that are actually included in the full GroupInfo.
-For implementations that support PartialGroupInfo, if the `ratchet_tree`
-extension is ever present in the signed GroupInfo, it MUST be the last element
-in the extension list.
+
+The `ratchet_tree_index` is present if and only if `ratchet_tree_presence` is
+`present` or `added`. It is the zero-based position that the `ratchet_tree`
+extension had in the extension list of the signed GroupInfo. To reconstruct the
+signed GroupInfo, the receiver inserts the `ratchet_tree` extension into
+`group_info_extensions` at that position. This works with GroupInfos signed by
+any RFC 9420 implementation, which places GroupInfo extensions in any order. A
+receiver MUST reject a PartialGroupInfo whose `ratchet_tree_index` is absent
+when `ratchet_tree_presence` is `present` or `added`, is present otherwise, or
+is greater than the number of entries in `group_info_extensions`.
 
 # Security Considerations
 
